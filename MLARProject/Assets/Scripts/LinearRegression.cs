@@ -36,4 +36,47 @@ public class LinearRegression : MonoBehaviour
             }
         }
     }
+
+    public static void LinearRegressionCalc(
+        double[] xValues,
+        double[] yValues,
+        out double yIntercept,
+        out double slope)
+    {
+        if (xValues.Length != yValues.Length)
+        {
+            throw new Exception("Input values should be with the same length");
+        }
+
+        double xSum = 0;
+        double ySum = 0;
+        double xSumSquared = 0;
+        double ySumSquared = 0;
+        double codeviatesSum = 0;
+
+        for (var i = 0; i < xValues.Length; i++)
+        {
+            var x = xValues[i];
+            var y = yValues[i];
+            codeviatesSum += x * y;
+            xSum += x;
+            ySum += y;
+            xSumSquared += x * x;
+            ySumSquared += y * y;
+        }
+
+        var count = xValues.Length;
+        var xSS = xSumSquared - ((xSum * xSum) / count);
+        var ySS = ySumSquared - ((ySum * ySum) / count);
+
+        var numeratorR = (count * codeviatesSum) - (xSum * ySum);
+        var denomR = (count * xSumSquared - (xSum * xSum)) * (count * ySumSquared - (ySum * ySum));
+        var coS = codeviatesSum - ((xSum * ySum) / count);
+
+        var xMean = xSum / count;
+        var yMean = ySum / count;
+
+        yIntercept = yMean - ((coS / xSS) * xMean);
+        slope = coS / xSS;
+    }
 }
