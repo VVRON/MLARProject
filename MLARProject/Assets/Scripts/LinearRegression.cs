@@ -7,7 +7,10 @@ using TMPro;
 
 public class LinearRegression : MonoBehaviour
 {
+    public TextMeshProUGUI textPredictionResult;
     public TextMeshProUGUI textDatasetObject;
+    public InputField inputObject;
+
     List<double> yearValues = new List<double>();
     List<double> quantityValues = new List<double>();
 
@@ -20,7 +23,7 @@ public class LinearRegression : MonoBehaviour
 
         for (int i = 1; i < data.Length - 1; i++)
         {
-            string[] row = data[i].Split(new char[] { '\n' });
+            string[] row = data[i].Split(new char[] { ',' });
             
 
             if(row[1] != "")
@@ -45,7 +48,7 @@ public class LinearRegression : MonoBehaviour
     {
         if (xValues.Length != yValues.Length)
         {
-            throw new Exception("Input values should be with the same length");
+            throw new Exception("Input values should be with the same length.");
         }
 
         double xSum = 0;
@@ -78,5 +81,18 @@ public class LinearRegression : MonoBehaviour
 
         yIntercept = yMean - ((coS / xSS) * xMean);
         slope = coS / xSS;
+    }
+
+    public void PredictionTask()
+    {
+
+        double intercept, slope;
+        LinearRegressionCalc(yearValues.ToArray(), quantityValues.ToArray(), out intercept, out slope);
+ 
+ 
+        var predictedValue = (slope * int.Parse(inputObject.text)) + intercept;
+        textPredictionResult.text = "Result: " + predictedValue;
+        Debug.Log("Prediction for " + inputObject.text + " : " + predictedValue);
+
     }
 }
