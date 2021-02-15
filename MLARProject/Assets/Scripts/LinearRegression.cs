@@ -11,11 +11,16 @@ public class LinearRegression : MonoBehaviour
     public TextMeshProUGUI textDatasetObject;
     public InputField inputObject;
 
-    List<double> yearValues = new List<double>();
-    List<double> quantityValues = new List<double>();
+    // Use public and static to share the lists data
+    public static List<double> yearValues = new List<double>();
+    public static List<double> quantityValues = new List<double>();
 
     void Start()
     {
+        // Clear the lists
+        yearValues.Clear();
+        quantityValues.Clear();
+
         TextAsset csvdata = Resources.Load<TextAsset>("dataset");
 
         string[] data = csvdata.text.Split(new char[] { '\n' });
